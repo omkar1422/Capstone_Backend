@@ -14,17 +14,19 @@ public class Customer {
     private String customerEmail;
     private String customerPassword;
     private String customerPhone;
+    private String role;
 
     public Customer() {
 
     }
 
-    public Customer(int customerId, String customerName, String customerEmail, String customerPassword, String customerPhone) {
+    public Customer(int customerId, String customerName, String customerEmail, String customerPassword, String customerPhone, String role) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.customerEmail = customerEmail;
         this.customerPassword = customerPassword;
         this.customerPhone = customerPhone;
+        this.role = role;
     }
 
     public int getCustomerId() {
@@ -67,6 +69,14 @@ public class Customer {
         this.customerPhone = customerPhone;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     @Override
     public String toString() {
         return "Customer{" +
@@ -75,6 +85,7 @@ public class Customer {
                 ", customerEmail='" + customerEmail + '\'' +
                 ", customerPassword='" + customerPassword + '\'' +
                 ", customerPhone='" + customerPhone + '\'' +
+                ", role='" + role + '\'' +
                 '}';
     }
 }

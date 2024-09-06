@@ -1,8 +1,4 @@
-package ideas.restaurantsListing.rt_data.dto;
-
-import ideas.restaurantsListing.rt_data.Entity.Customer;
-import ideas.restaurantsListing.rt_data.Entity.Menu;
-import ideas.restaurantsListing.rt_data.Entity.Restaurant;
+package ideas.restaurantsListing.rt_data.dto.placedOrders;
 
 public interface PlacedOrdersByRestaurant {
     public int getPlacedOrderId();

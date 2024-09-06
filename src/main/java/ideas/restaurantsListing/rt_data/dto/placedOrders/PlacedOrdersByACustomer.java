@@ -1,21 +1,21 @@
-package ideas.restaurantsListing.rt_data.dto;
+package ideas.restaurantsListing.rt_data.dto.placedOrders;
 
+public interface PlacedOrdersByACustomer {
+    public int getPlacedOrderId();
 
-import ideas.restaurantsListing.rt_data.Entity.Restaurant;
+    public Menu getMenu();
 
-public interface CartItemsByCustomer {
-    Integer getCartId();
+    public float getPlacedOrderPrice();
+    public String getDelivery();
+    public int getPlacedOrderQty();
 
-    Menu getMenu();
-
-    Integer getQty();
-
-    interface Menu {
-        public Integer getMenuId();
+    public interface Menu {
+        public int getMenuId();
 
         public Restaurant getRestaurant();
 
         public String getMenuName();
+        public float getMenuPrice();
         public String getMenuImage();
 
         public interface Restaurant {

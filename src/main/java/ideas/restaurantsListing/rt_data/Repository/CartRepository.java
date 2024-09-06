@@ -2,14 +2,14 @@ package ideas.restaurantsListing.rt_data.Repository;
 
 import ideas.restaurantsListing.rt_data.Entity.Cart;
 import ideas.restaurantsListing.rt_data.Entity.Customer;
-import ideas.restaurantsListing.rt_data.dto.CartItemsByCustomer;
+import ideas.restaurantsListing.rt_data.dto.cart.CartItemsByCustomer;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface CartRepository extends CrudRepository<Cart,Integer> {
+public interface CartRepository extends JpaRepository<Cart,Integer> {
 
     public List<CartItemsByCustomer> findByCustomer(Customer customer);
 

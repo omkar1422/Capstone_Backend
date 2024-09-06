@@ -1,9 +1,16 @@
 package ideas.restaurantsListing.rt_data.Service;
 
 import ideas.restaurantsListing.rt_data.Entity.Restaurant;
+import ideas.restaurantsListing.rt_data.Exception.restaurant.RestaurantNotFoundException;
 import ideas.restaurantsListing.rt_data.Repository.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RestaurantService{
@@ -13,5 +20,22 @@ public class RestaurantService{
 
     public Restaurant saveRestaurant(Restaurant restaurant) {
         return restaurantRepository.save(restaurant);
+    }
+
+    public List<Restaurant> getAllRestaurants(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<Restaurant> pageResult = restaurantRepository.findAll(pageable);
+        return pageResult.getContent();
+    }
+
+    public Optional<Restaurant> getRestaurantById(int id) {
+        Optional<Restaurant> restaurant = restaurantRepository.findById(id);
+        if(restaurant == null)
+            throw new RestaurantNotFoundException("Restaurant with id " + id + "doesn't exist");
+        return restaurant;
+    }
+
+    public void deleteRestaurantById(int id) {
+        restaurantRepository.deleteById(id);
     }
 }

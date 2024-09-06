@@ -1,16 +1,10 @@
 package ideas.restaurantsListing.rt_data;
 
-import ideas.restaurantsListing.rt_data.Entity.*;
 import ideas.restaurantsListing.rt_data.Repository.*;
-import ideas.restaurantsListing.rt_data.dto.CartItemsByCustomer;
-import ideas.restaurantsListing.rt_data.dto.PlacedOrdersByACustomer;
-import ideas.restaurantsListing.rt_data.dto.PlacedOrdersByRestaurant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.List;
 
 @SpringBootApplication
 public class RtDataApplication implements CommandLineRunner {
@@ -40,110 +34,11 @@ public class RtDataApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-//		TODO: Create a customer
-//		Customer customer = new Customer(1, "John Smilga", "john@gmail.com", "password", "7058743322");
-//		Customer c = customerRepository.save(customer);
-//		System.out.println(c);
-
-//		TODO: View all customers
-//		List<Customer> customers = (List<Customer>) customerRepository.findAll();
-//		for (Customer customer: customers)
-//			System.out.println(customer);
-
-//		TODO: find customer by id
-//		Optional<Customer> customer =  customerRepository.findById(1);
-//		System.out.println(customer);
-
-//		TODO: Create a restaurant
-//		Restaurant restaurant = (Restaurant) restaurantRepository.save(
-//				new Restaurant(0,"Atithi","atithi@gmail.com","baner," +
-//						" pune", "7058743322")
-//		);
-//		System.out.println(restaurant);
-
-//		Restaurant restaurant = new Restaurant(0, "Maratha Samrat", "marathaSamrat@gmail.com", "baner, pune", "8459637251");
-//		Restaurant res = restaurantRepository.save(restaurant);
-
-
-//		TODO: find all restaurants
-//		List<Restaurant> restaurants = (List<Restaurant>) restaurantRepository.findAll();
-//		System.out.println(restaurants);
-
-//		TODO: find restaurant by id
-//		Optional<Restaurant> restaurant = restaurantRepository.findById(1);
-//		System.out.println(restaurant);
-
-//		TODO: delete restaurant by id
-//		restaurantRepository.deleteById(1);
-
-//		TODO: Create a new menu
-//		Menu menu1 = (Menu) menuRepository.save(
-//				new Menu(0,
-//						new Restaurant(1,null,null,null,null),
-//						"Margherita pizza", 500.0f, "")
-//		);
-//		System.out.println(menu1);
-//
-//		Menu menu2 = (Menu) menuRepository.save(
-//				new Menu(0,
-//						new Restaurant(1,null,null,null,null),
-//						"White sauce pasta", 400.0f, "")
-//		);
-//		System.out.println(menu2);
-//
-//		Menu menu3 = (Menu) menuRepository.save(
-//		new Menu(0,
-//				new Restaurant(1,null,null,null,null),
-//				"Cheese Burger", 300.0f, "")
-//		);
-//		System.out.println(menu3);
-
-//		TODO: create a placed order
-//		PlacedOrder order = placedOrderRepository.save(new PlacedOrder(0,
-//				new Menu(1,null,null,null,null),
-//				new Customer(1,null,null,null,null),
-//				new Restaurant(1,null,null,null,null),
-//				620.0f, "not delivered", 1)
-//		);
-//		System.out.println(order);
-
-//		TODO: find placed order by Customer
-//		List<PlacedOrdersByACustomer> orders = placedOrderRepository.findByCustomer(
-//				new Customer(1,null,null,null,null)
-//		);
-//		for(PlacedOrdersByACustomer order: orders) {
-//			System.out.println(order.getPlacedOrderId());
-//			System.out.println(order.getMenu());
-//			System.out.println(order.getPlacedOrderQty());
-//			System.out.println(order.getPlacedOrderPrice());
-//			System.out.println(order.getDelivery());
-//		}
-
-//		TODO: find placed order by restaurant
-//		List<PlacedOrdersByRestaurant> orders = placedOrderRepository.findByRestaurant(
-//				new Restaurant(1,null,null,null,null)
-//		);
-//		for(PlacedOrdersByRestaurant order: orders) {
-//			System.out.println(order.getPlacedOrderId());
-//			System.out.println(order.getMenu());
-//			System.out.println(order.getCustomer());
-//
-//		}
 
 //		TODO: delete particular order of a particular customer
 //		find placed order by customer first and then delete by it placedorderId
 //		placedOrderRepository.deleteByPlacedOrderId(2);
 
-//		TODO: get all menus of a restaurant
-//		List<MenusByRestaurant> menus = menuRepository.findByRestaurant(
-//				new Restaurant(1,null,null,null,null)
-//		);
-//		for(MenusByRestaurant menu: menus) {
-//			System.out.println(menu.getMenuId());
-//			System.out.println(menu.getMenuName());
-//			System.out.println(menu.getMenuPrice());
-//			System.out.println(menu.getMenuImage());
-//		}
 
 //		TODO: Create Rating
 //		Rating rating = ratingRepository.save(

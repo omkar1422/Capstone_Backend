@@ -13,7 +13,7 @@ public class Menu {
     private Restaurant restaurant;
 
     private String menuName;
-    private Float menuPrice;
+    private float menuPrice;
     private String menuImage;
 
     public Menu() {

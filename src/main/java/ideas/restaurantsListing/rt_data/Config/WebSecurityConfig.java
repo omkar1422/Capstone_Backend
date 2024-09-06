@@ -1,12 +1,13 @@
-package ideas.restaurantsListing.rt_data;
+package ideas.restaurantsListing.rt_data.Config;
 
 import ideas.restaurantsListing.rt_data.Filters.JwtRequestFilter;
-import ideas.restaurantsListing.rt_data.Service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -17,13 +18,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig {
 
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
-
-//    @Autowired
-//    private CustomerService customerService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -33,8 +32,9 @@ public class WebSecurityConfig {
                         .disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/restaurantListings/api/customer/login",
-                                "/restaurantListings/api/customer/register", "/h2-console/**").permitAll()
-                        .anyRequest().authenticated()
+                                "/restaurantListings/api/customer/register",
+                                "/restaurantListings/api/customer/authAdmin/register", "/h2-console/**").permitAll()
+                                .anyRequest().authenticated()
                 )
                 .headers(headers -> headers
                         .frameOptions(frame -> frame.sameOrigin()))

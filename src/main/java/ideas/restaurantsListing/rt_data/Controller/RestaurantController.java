@@ -1,25 +1,45 @@
 package ideas.restaurantsListing.rt_data.Controller;
 
 import ideas.restaurantsListing.rt_data.Entity.Restaurant;
-import ideas.restaurantsListing.rt_data.Repository.RestaurantRepository;
+import ideas.restaurantsListing.rt_data.Service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/restaurantListings/api/restaurant")
 public class RestaurantController {
 
     @Autowired
-    private RestaurantRepository restaurantRepository;
+    private RestaurantService restaurantService;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<Restaurant> saveRestaurant(@RequestBody Restaurant restaurant) {
-        Restaurant savedRestaurant = restaurantRepository.save(restaurant);
+        Restaurant savedRestaurant = restaurantService.saveRestaurant(restaurant);
         return ResponseEntity.ok(savedRestaurant);
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_ADMIN')")
+    @GetMapping("/getAllRestaurants/{pageNo}/{pageSize}")
+    public ResponseEntity<List<Restaurant>> getRestaurantsByPaging(@PathVariable("pageNo") int pageNo,
+                                                                       @PathVariable("pageSize") int pageSize) {
+        return ResponseEntity.ok(restaurantService.getAllRestaurants(pageNo, pageSize));
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_ADMIN')")
+    @GetMapping("/getById/{id}")
+    public ResponseEntity<Optional<Restaurant>> getRestaurantById(@PathVariable("id") int id) {
+        return ResponseEntity.ok(restaurantService.getRestaurantById(id));
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("/deleteById/{id}")
+    public void deleteRestaurantById(@PathVariable("id") int id) {
+        restaurantService.deleteRestaurantById(id);
     }
 }

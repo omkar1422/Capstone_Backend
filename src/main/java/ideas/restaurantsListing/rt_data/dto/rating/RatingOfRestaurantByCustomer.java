@@ -1,4 +1,4 @@
-package ideas.restaurantsListing.rt_data.dto;
+package ideas.restaurantsListing.rt_data.dto.rating;
 
 public interface RatingOfRestaurantByCustomer {
 
