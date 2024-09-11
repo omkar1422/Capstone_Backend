@@ -1,5 +1,6 @@
 package ideas.restaurantsListing.rt_data.Filters;
 
+import ideas.restaurantsListing.rt_data.Exception.jwt.TokenExpiredException;
 import ideas.restaurantsListing.rt_data.Service.CustomerService;
 import ideas.restaurantsListing.rt_data.Util.JwtUtil;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -28,8 +29,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        final String authorizationHeader = request.getHeader("Authorization");
 
+        final String authorizationHeader = request.getHeader("Authorization");
         String email = null;
         String jwt = null;
 
@@ -37,8 +38,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             jwt = authorizationHeader.substring(7);
             try {
                 email = jwtUtil.extractUsername(jwt);
-            } catch (ExpiredJwtException e) {
-                e.printStackTrace();
+            }  catch (TokenExpiredException e) {
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                response.getWriter().write("Token expired: " + e.getMessage());
+                return; // Stop the filter chain, send response back
+            } catch (RuntimeException e) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write("Invalid token: " + e.getMessage());
+                return; // Stop the filter chain, send response back
             }
         }
 

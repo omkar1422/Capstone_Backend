@@ -30,8 +30,14 @@ public class PlacedOrderController {
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
-    @GetMapping("/restaurant/{id}")
+    @GetMapping("/getByRestaurant/{id}")
     public List<PlacedOrdersByRestaurant> getPlacedOrdersByRestaurant(@PathVariable("id") int id) {
         return placedOrderService.placedOrdersByRestaurant(id);
+    }
+
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    @DeleteMapping("/deleteById/{id}")
+    public Integer deleteRestaurantById(@PathVariable("id") int id) {
+        return placedOrderService.deleteByPlacedOrderId(id);
     }
 }

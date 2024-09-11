@@ -2,6 +2,7 @@ package ideas.restaurantsListing.rt_data.Controller;
 
 import ideas.restaurantsListing.rt_data.Entity.Restaurant;
 import ideas.restaurantsListing.rt_data.Service.RestaurantService;
+import ideas.restaurantsListing.rt_data.dto.restaurant.RestaurantById;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,7 +34,7 @@ public class RestaurantController {
 
     @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_ADMIN')")
     @GetMapping("/getById/{id}")
-    public ResponseEntity<Optional<Restaurant>> getRestaurantById(@PathVariable("id") int id) {
+    public ResponseEntity<Optional<RestaurantById>> getRestaurantById(@PathVariable("id") int id) {
         return ResponseEntity.ok(restaurantService.getRestaurantById(id));
     }
 

@@ -36,11 +36,10 @@ public class PlacedOrderService {
         );
     }
 
-    public boolean deleteByPlacedOrderId(int id) {
+    public Integer deleteByPlacedOrderId(int id) {
         if( !placedOrderRepository.existsById(id))
             throw new PlacedOrderNotFound("Order with id " + id + "not found");
-        if(placedOrderRepository.deleteByPlacedOrderId(id))
-            return true;
-        return false;
+
+        return placedOrderRepository.deleteByPlacedOrderId(id);
     }
 }

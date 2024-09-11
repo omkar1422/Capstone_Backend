@@ -3,6 +3,7 @@ package ideas.restaurantsListing.rt_data.Service;
 import ideas.restaurantsListing.rt_data.Entity.Restaurant;
 import ideas.restaurantsListing.rt_data.Exception.restaurant.RestaurantNotFoundException;
 import ideas.restaurantsListing.rt_data.Repository.RestaurantRepository;
+import ideas.restaurantsListing.rt_data.dto.restaurant.RestaurantById;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,8 +29,8 @@ public class RestaurantService{
         return pageResult.getContent();
     }
 
-    public Optional<Restaurant> getRestaurantById(int id) {
-        Optional<Restaurant> restaurant = restaurantRepository.findById(id);
+    public Optional<RestaurantById> getRestaurantById(int id) {
+        Optional<RestaurantById> restaurant = restaurantRepository.findById(id);
         if(restaurant == null)
             throw new RestaurantNotFoundException("Restaurant with id " + id + "doesn't exist");
         return restaurant;

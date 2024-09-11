@@ -1,5 +1,6 @@
 package ideas.restaurantsListing.rt_data.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -10,6 +11,7 @@ public class Menu {
 
     @ManyToOne
     @JoinColumn(name = "restaurantId")
+    @JsonBackReference
     private Restaurant restaurant;
 
     private String menuName;

@@ -1,5 +1,6 @@
 package ideas.restaurantsListing.rt_data.Entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -11,6 +12,7 @@ public class Restaurant {
     private int restaurantId;
 
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.EAGER)
+    @JsonManagedReference
     List<Menu> menus;
 
     private String restaurantName;

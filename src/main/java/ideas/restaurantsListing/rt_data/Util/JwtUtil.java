@@ -1,8 +1,7 @@
 package ideas.restaurantsListing.rt_data.Util;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import ideas.restaurantsListing.rt_data.Exception.jwt.TokenExpiredException;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -27,10 +26,6 @@ public class JwtUtil {
         return extractClaim(token, Claims::getExpiration);
     }
 
-//    public Date extractExpiration(String token) {
-//        return extractClaim(token, Claims::getExpiration);
-//    }
-
     public String extractRole(String token) {
         return extractAllClaims(token).get("role", String.class);
     }
@@ -42,18 +37,23 @@ public class JwtUtil {
     }
 
     private Claims extractAllClaims(String token) {
-//        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+
+        try{
+            return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        }
+        catch (ExpiredJwtException e) {
+            throw new TokenExpiredException("Token has expired");
+        }
+        catch (UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
+            throw new RuntimeException("Invalid JWT token: " + e.getMessage());
+        }
     }
 
     private Boolean isTokenExpired(String token) {
-//        return extractExpiration(token).before(new Date());
         return extractExpiration(token).before(new Date());
     }
 
     public String generateToken(UserDetails userDetails) {
-//        Map<String, Object> claims = new HashMap<>();
-//        return createToken(claims, username);
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", userDetails.getAuthorities().iterator().next().getAuthority()); // Add the role to claims
         return createToken(claims, userDetails.getUsername());

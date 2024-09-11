@@ -16,5 +16,5 @@ public interface PlacedOrderRepository extends JpaRepository<PlacedOrder,Integer
     public List<PlacedOrdersByRestaurant> findByRestaurant(Restaurant restaurant);
 
     @Transactional
-    public boolean deleteByPlacedOrderId(int placedOrderId);
+    public Integer deleteByPlacedOrderId(int placedOrderId);
 }
