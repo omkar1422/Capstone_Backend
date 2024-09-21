@@ -33,7 +33,9 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/restaurantListings/api/customer/login",
                                 "/restaurantListings/api/customer/register",
-                                "/restaurantListings/api/customer/authAdmin/register", "/h2-console/**").permitAll()
+                                "/restaurantListings/api/customer/authAdmin/register",
+                                "/restaurantListings/api/restaurant/getAllRestaurants",
+                                "/h2-console/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .headers(headers -> headers

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/restaurantListings/api/placedOrder")
 public class PlacedOrderController {
@@ -24,9 +25,9 @@ public class PlacedOrderController {
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
-    @GetMapping("/customer/{id}")
-    public List<PlacedOrdersByACustomer> getPlacedOrdersByCustomer(@PathVariable("id") int id) {
-        return placedOrderService.placedOrdersByACustomer(id);
+    @GetMapping("/customer/{customerId}")
+    public List<PlacedOrdersByACustomer> getPlacedOrdersByCustomer(@PathVariable("customerId") int customerId) {
+        return placedOrderService.placedOrdersByACustomer(customerId);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
@@ -39,5 +40,11 @@ public class PlacedOrderController {
     @DeleteMapping("/deleteById/{id}")
     public Integer deleteRestaurantById(@PathVariable("id") int id) {
         return placedOrderService.deleteByPlacedOrderId(id);
+    }
+
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    @GetMapping("/placeOrderFromCart/{customerId}")
+    public void placeOrderFromCart(@PathVariable("customerId") int customerId) {
+        placedOrderService.placeOrderAndClearCart(customerId);
     }
 }

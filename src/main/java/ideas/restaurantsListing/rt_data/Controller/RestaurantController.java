@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/restaurantListings/api/restaurant")
 public class RestaurantController {
@@ -26,10 +27,16 @@ public class RestaurantController {
     }
 
     @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_ADMIN')")
+    @GetMapping("/getAllRestaurants")
+    public List<Restaurant> getAllRestaurants() {
+        return restaurantService.getAllRestaurants();
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_ADMIN')")
     @GetMapping("/getAllRestaurants/{pageNo}/{pageSize}")
     public ResponseEntity<List<Restaurant>> getRestaurantsByPaging(@PathVariable("pageNo") int pageNo,
                                                                        @PathVariable("pageSize") int pageSize) {
-        return ResponseEntity.ok(restaurantService.getAllRestaurants(pageNo, pageSize));
+        return ResponseEntity.ok(restaurantService.getAllRestaurantsPaging(pageNo, pageSize));
     }
 
     @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_ADMIN')")

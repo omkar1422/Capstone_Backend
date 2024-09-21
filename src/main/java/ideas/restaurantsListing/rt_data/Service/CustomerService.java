@@ -18,6 +18,10 @@ public class CustomerService implements UserDetailsService {
     @Autowired
     private CustomerRepository customerRepository;
 
+    public Customer getCustomerByEmail(String customerEmail) {
+        return customerRepository.findByCustomerEmail(customerEmail);
+    }
+
     public Iterable<Customer> getallCustomers() {
         return customerRepository.findAll();
     }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/restaurantListings/api/cart")
 public class CartController {
@@ -33,4 +34,18 @@ public class CartController {
     public Double getTotalPriceByCustomerId(@PathVariable("customerId") int customerId) {
         return cartService.getTotalPriceByCustomerId(customerId);
     }
+
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    @DeleteMapping("/deleteCartItem/{cartId}")
+    public void deleteCartItemByCartId(@PathVariable("cartId") int cartId) {
+        cartService.deleteCartItemByCartId(cartId);
+    }
+
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    @DeleteMapping("/deleteCart/{customerId}")
+    public void deleteCartByCustomerId(@PathVariable("customerId") int customerId) {
+        cartService.deleteByCustomerId(customerId);
+    }
+
+
 }

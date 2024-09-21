@@ -22,17 +22,21 @@ public class Restaurant {
 
     private String restaurantAddress;
     private String restaurantPhone;
+    private String restaurantImage;
 
     public Restaurant() {
 
     }
 
-    public Restaurant(int restaurantId, String restaurantName, String restaurantEmail, String restaurantAddress, String restaurantPhone) {
+    public Restaurant(int restaurantId, List<Menu> menus, String restaurantName, String restaurantEmail,
+                      String restaurantAddress, String restaurantPhone, String restaurantImage) {
         this.restaurantId = restaurantId;
+        this.menus = menus;
         this.restaurantName = restaurantName;
         this.restaurantEmail = restaurantEmail;
         this.restaurantAddress = restaurantAddress;
         this.restaurantPhone = restaurantPhone;
+        this.restaurantImage = restaurantImage;
     }
 
     public int getRestaurantId() {
@@ -83,15 +87,11 @@ public class Restaurant {
         this.restaurantPhone = restaurantPhone;
     }
 
-    @Override
-    public String toString() {
-        return "Restaurant{" +
-                "restaurantId=" + restaurantId +
-//                ", menus=" + menus +
-                ", restaurantName='" + restaurantName + '\'' +
-                ", restaurantEmail='" + restaurantEmail + '\'' +
-                ", restaurantAddress='" + restaurantAddress + '\'' +
-                ", restaurantPhone='" + restaurantPhone + '\'' +
-                '}';
+    public String getRestaurantImage() {
+        return restaurantImage;
+    }
+
+    public void setRestaurantImage(String restaurantImage) {
+        this.restaurantImage = restaurantImage;
     }
 }

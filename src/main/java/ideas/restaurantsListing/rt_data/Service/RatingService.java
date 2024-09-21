@@ -20,8 +20,8 @@ public class RatingService {
 
     public RatingOfRestaurantByCustomer getRatingByRestaurantAndCustomer(int restaurantId, int customerId) {
         return ratingRepository.findByRestaurantAndCustomer(
-                new Restaurant(restaurantId,null,null,null,null),
-                new Customer(customerId,null,null,null,null,null)
+                new Restaurant(restaurantId,null,null,null,null,null,null),
+                new Customer(customerId,null,null,null,null,null,null)
         );
     }
 

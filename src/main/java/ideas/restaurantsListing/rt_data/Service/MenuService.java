@@ -22,7 +22,7 @@ public class MenuService {
 
     public List<MenusByRestaurant> getMenusByRestaurant(int id) {
         return menuRepository.findByRestaurant(
-                new Restaurant(id,null,null,null,null)
+                new Restaurant(id,null,null,null,null,null,null)
         );
     }
 }

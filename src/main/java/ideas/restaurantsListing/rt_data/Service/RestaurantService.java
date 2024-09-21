@@ -19,11 +19,15 @@ public class RestaurantService{
     @Autowired
     RestaurantRepository restaurantRepository;
 
+    public List<Restaurant> getAllRestaurants() {
+        return restaurantRepository.findAll();
+    }
+
     public Restaurant saveRestaurant(Restaurant restaurant) {
         return restaurantRepository.save(restaurant);
     }
 
-    public List<Restaurant> getAllRestaurants(int pageNo, int pageSize) {
+    public List<Restaurant> getAllRestaurantsPaging(int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
         Page<Restaurant> pageResult = restaurantRepository.findAll(pageable);
         return pageResult.getContent();
