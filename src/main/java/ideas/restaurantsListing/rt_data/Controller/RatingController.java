@@ -5,10 +5,13 @@ import ideas.restaurantsListing.rt_data.Entity.Rating;
 import ideas.restaurantsListing.rt_data.Entity.Restaurant;
 import ideas.restaurantsListing.rt_data.Exception.rating.RatingAlreadySubmitted;
 import ideas.restaurantsListing.rt_data.Service.RatingService;
+import ideas.restaurantsListing.rt_data.dto.rating.RatingByRestaurat;
 import ideas.restaurantsListing.rt_data.dto.rating.RatingOfRestaurantByCustomer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -17,6 +20,11 @@ public class RatingController {
 
     @Autowired
     public RatingService ratingService;
+
+    @PostMapping("/saveListOfRatings")
+    public List<Rating> saveListOfRatings(@RequestBody List<Rating> ratings) {
+        return ratingService.saveListOfRatings(ratings);
+    }
 
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     @PostMapping
@@ -38,9 +46,14 @@ public class RatingController {
         );
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_ADMIN')")
+//    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_ADMIN')")
     @GetMapping("/averageRating/{restaurantId}")
     public Double getAverageRatingByRestaurant(@PathVariable("restaurantId") int restaurantId) {
         return ratingService.getAverageRatingOfARestaurant(restaurantId);
+    }
+
+    @GetMapping("/allRatings/{restaurantId}")
+    public List<RatingByRestaurat> getAllRatings(@PathVariable("restaurantId") int restaurantId) {
+        return ratingService.getRatingsByRestaurant(restaurantId);
     }
 }

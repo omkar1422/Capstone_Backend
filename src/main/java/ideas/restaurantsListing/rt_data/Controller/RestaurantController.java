@@ -26,20 +26,20 @@ public class RestaurantController {
         return ResponseEntity.ok(savedRestaurant);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_ADMIN')")
+//    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_ADMIN')")
     @GetMapping("/getAllRestaurants")
     public List<Restaurant> getAllRestaurants() {
         return restaurantService.getAllRestaurants();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_ADMIN')")
+//    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_ADMIN')")
     @GetMapping("/getAllRestaurants/{pageNo}/{pageSize}")
     public ResponseEntity<List<Restaurant>> getRestaurantsByPaging(@PathVariable("pageNo") int pageNo,
                                                                        @PathVariable("pageSize") int pageSize) {
         return ResponseEntity.ok(restaurantService.getAllRestaurantsPaging(pageNo, pageSize));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_ADMIN')")
+//    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_ADMIN')")
     @GetMapping("/getById/{id}")
     public ResponseEntity<Optional<RestaurantById>> getRestaurantById(@PathVariable("id") int id) {
         return ResponseEntity.ok(restaurantService.getRestaurantById(id));

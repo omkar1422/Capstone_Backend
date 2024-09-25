@@ -34,7 +34,10 @@ public class WebSecurityConfig {
                         .requestMatchers("/restaurantListings/api/customer/login",
                                 "/restaurantListings/api/customer/register",
                                 "/restaurantListings/api/customer/authAdmin/register",
-                                "/restaurantListings/api/restaurant/getAllRestaurants",
+                                "/restaurantListings/api/restaurant/**",
+                                "/restaurantListings/api/rating/averageRating/**",
+                                "/restaurantListings/api/rating/saveListOfRatings",
+                                "/restaurantListings/api/rating/allRatings/**",
                                 "/h2-console/**").permitAll()
                                 .anyRequest().authenticated()
                 )
