@@ -19,6 +19,10 @@ public class RestaurantService{
     @Autowired
     RestaurantRepository restaurantRepository;
 
+    public List<Restaurant> saveListOfRestaurants(List<Restaurant> restaurants) {
+        return restaurantRepository.saveAll(restaurants);
+    }
+
     public List<Restaurant> getAllRestaurants() {
         return restaurantRepository.findAll();
     }

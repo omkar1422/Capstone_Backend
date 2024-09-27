@@ -35,7 +35,7 @@ class RestaurantServiceTest {
     @Test
     public void shouldSaveRestaurant() {
         Restaurant restaurant = new Restaurant(1,null,"Atithi",
-                "atithi@gmail.com","baner, pune","7058743322",null);
+                "atithi@gmail.com","baner, pune","7058743322",null,null);
         when(restaurantRepository.save(restaurant)).thenReturn(restaurant);
         assertEquals(restaurant, restaurantService.saveRestaurant(restaurant));
     }
@@ -43,8 +43,8 @@ class RestaurantServiceTest {
     @Test
     public void shouldGetAllRestaurants() {
         List<Restaurant> restaurants = new ArrayList<>();
-        restaurants.add(new Restaurant(1,null,null,null,null,null,null));
-        restaurants.add(new Restaurant(2,null,null,null,null,null,null));
+        restaurants.add(new Restaurant(1,null,null,null,null,null,null,null));
+        restaurants.add(new Restaurant(2,null,null,null,null,null,null,null));
         when(restaurantRepository.findAll()).thenReturn(restaurants);
         assertEquals(restaurants, restaurantService.getAllRestaurants());
     }

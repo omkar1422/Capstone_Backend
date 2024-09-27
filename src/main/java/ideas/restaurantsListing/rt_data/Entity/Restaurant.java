@@ -24,12 +24,22 @@ public class Restaurant {
     private String restaurantPhone;
     private String restaurantImage;
 
+    public String getRestaurantType() {
+        return restaurantType;
+    }
+
+    public void setRestaurantType(String restaurantType) {
+        this.restaurantType = restaurantType;
+    }
+
+    private String restaurantType;
+
     public Restaurant() {
 
     }
 
     public Restaurant(int restaurantId, List<Menu> menus, String restaurantName, String restaurantEmail,
-                      String restaurantAddress, String restaurantPhone, String restaurantImage) {
+                      String restaurantAddress, String restaurantPhone, String restaurantImage, String restaurantType) {
         this.restaurantId = restaurantId;
         this.menus = menus;
         this.restaurantName = restaurantName;
@@ -37,6 +47,7 @@ public class Restaurant {
         this.restaurantAddress = restaurantAddress;
         this.restaurantPhone = restaurantPhone;
         this.restaurantImage = restaurantImage;
+        this.restaurantType = restaurantType;
     }
 
     public int getRestaurantId() {

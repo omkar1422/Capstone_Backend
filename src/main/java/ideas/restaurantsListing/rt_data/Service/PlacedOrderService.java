@@ -35,7 +35,7 @@ public class PlacedOrderService {
 
     public List<PlacedOrdersByRestaurant> placedOrdersByRestaurant(int id) {
         return placedOrderRepository.findByRestaurant(
-                new Restaurant(id,null,null,null,null,null,null)
+                new Restaurant(id,null,null,null,null,null,null,null)
         );
     }
 

@@ -48,7 +48,7 @@ class RatingServiceTest {
     public void shouldGetRatingByCustomer() {
 
         Customer cus = new Customer(1,null,null,null,null,null,null);
-        Restaurant res = new Restaurant(1,null,null,null,null,null,null);
+        Restaurant res = new Restaurant(1,null,null,null,null,null,null,null);
 
         RatingOfRestaurantByCustomer rating = mock(RatingOfRestaurantByCustomer.class);
         when(rating.getRatingId()).thenReturn(1);

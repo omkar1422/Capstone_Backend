@@ -19,6 +19,11 @@ public class RestaurantController {
     @Autowired
     private RestaurantService restaurantService;
 
+    @PostMapping("/saveRestaurantsList")
+    public List<Restaurant> saveListOfRestaurants(@RequestBody List<Restaurant> restaurants) {
+        return restaurantService.saveListOfRestaurants(restaurants);
+    }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<Restaurant> saveRestaurant(@RequestBody Restaurant restaurant) {

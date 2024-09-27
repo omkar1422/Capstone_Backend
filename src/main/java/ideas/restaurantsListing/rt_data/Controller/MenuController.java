@@ -16,6 +16,11 @@ public class MenuController {
     @Autowired
     private MenuService menuService;
 
+    @PostMapping("/saveListOfMenus")
+    public List<Menu> saveListOfMenus(@RequestBody List<Menu> menus) {
+        return menuService.saveListOfMenus(menus);
+    }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public Menu saveMenu(@RequestBody Menu menu) {

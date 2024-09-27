@@ -17,17 +17,38 @@ public class Menu {
     private String menuName;
     private float menuPrice;
     private String menuImage;
+    private String menuDescription;
+    private String menuType;
 
     public Menu() {
 
     }
 
-    public Menu(int menuId, Restaurant restaurant, String menuName, Float menuPrice, String menuImage) {
+    public String getMenuDescription() {
+        return menuDescription;
+    }
+
+    public void setMenuDescription(String menuDescription) {
+        this.menuDescription = menuDescription;
+    }
+
+    public Menu(int menuId, Restaurant restaurant, String menuName, Float menuPrice, String menuImage,
+                String menuDescription, String menuType) {
         this.menuId = menuId;
         this.restaurant = restaurant;
         this.menuName = menuName;
         this.menuPrice = menuPrice;
         this.menuImage = menuImage;
+        this.menuDescription = menuDescription;
+        this.menuType = menuType;
+    }
+
+    public String getMenuType() {
+        return menuType;
+    }
+
+    public void setMenuType(String menuType) {
+        this.menuType = menuType;
     }
 
     public int getMenuId() {
