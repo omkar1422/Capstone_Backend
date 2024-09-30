@@ -24,72 +24,90 @@ public class PlacedOrderService {
     private CartRepository cartRepository;
 
     public PlacedOrder savePlacedOrder(PlacedOrder placedOrder) {
-        return placedOrderRepository.save(placedOrder);
+        try {
+            return placedOrderRepository.save(placedOrder);
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     public List<PlacedOrdersByACustomer> placedOrdersByACustomer(int id) {
-        return placedOrderRepository.findByCustomer(
-                new Customer(id,null,null,null,null,null,null)
-        );
+        try {
+            return placedOrderRepository.findByCustomer(
+                    new Customer(id,null,null,null,null,null,null)
+            );
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     public List<PlacedOrdersByRestaurant> placedOrdersByRestaurant(int id) {
-        return placedOrderRepository.findByRestaurant(
-                new Restaurant(id,null,null,null,null,null,null,null)
-        );
+        try {
+            return placedOrderRepository.findByRestaurant(
+                    new Restaurant(id,null,null,null,null,null,null,null)
+            );
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     public Integer deleteByPlacedOrderId(int id) {
-        if( !placedOrderRepository.existsById(id))
-            throw new PlacedOrderNotFound("Order with id " + id + "not found");
+        try{
+            if( !placedOrderRepository.existsById(id))
+                throw new PlacedOrderNotFound("Order with id " + id + "not found");
 
-        return placedOrderRepository.deleteByPlacedOrderId(id);
+            return placedOrderRepository.deleteByPlacedOrderId(id);
+        } catch (Exception e) {
+            throw new PlacedOrderNotFound("Order with id " + id + "not found");
+        }
     }
 
     @Transactional
     public void placeOrderAndClearCart(int customerId) {
-        // Fetch all cart items for the customer
-        List<CartItemsByCustomer> cartItems = cartRepository.findByCustomer(
-                new Customer(customerId,null,null,null,null,null,null)
-        );
 
-        // Insert each cart item into PlacedOrder and then delete it from Cart
-        for (CartItemsByCustomer cartItem : cartItems) {
-            PlacedOrder placedOrder = new PlacedOrder();
+        try {
+            // Fetch all cart items for the customer
+            List<CartItemsByCustomer> cartItems = cartRepository.findByCustomer(
+                    new Customer(customerId, null, null, null, null, null, null)
+            );
 
-            Menu menu = new Menu();
-            menu.setMenuId(cartItem.getMenu().getMenuId());
-            menu.setMenuName(cartItem.getMenu().getMenuName());
-            menu.setMenuPrice(cartItem.getMenu().getMenuPrice());
-            menu.setMenuImage(cartItem.getMenu().getMenuImage());
-            placedOrder.setMenu(menu);
+            // Insert each cart item into PlacedOrder and then delete it from Cart
+            for (CartItemsByCustomer cartItem : cartItems) {
+                PlacedOrder placedOrder = new PlacedOrder();
 
-            Customer customer = new Customer();
-            customer.setCustomerId(cartItem.getCustomer().getCustomerId());
-//            customer.setCustomerName(placedOrder.getCustomer().getCustomerName());
-//            customer.setRole(placedOrder.getCustomer().getRole());
-//            customer.setCustomerEmail(placedOrder.getCustomer().getCustomerEmail());
-//            customer.setCustomerPhone(placedOrder.getCustomer().getCustomerPhone());
-            placedOrder.setCustomer(customer);
+                Menu menu = new Menu();
+                menu.setMenuId(cartItem.getMenu().getMenuId());
+                menu.setMenuName(cartItem.getMenu().getMenuName());
+                menu.setMenuPrice(cartItem.getMenu().getMenuPrice());
+                menu.setMenuImage(cartItem.getMenu().getMenuImage());
+                placedOrder.setMenu(menu);
 
-            Restaurant restaurant = new Restaurant();
-            restaurant.setRestaurantId(cartItem.getMenu().getRestaurant().getRestaurantId());
-            restaurant.setRestaurantName(cartItem.getMenu().getRestaurant().getRestaurantName());
-            restaurant.setRestaurantAddress(cartItem.getMenu().getRestaurant().getRestaurantAddress());
-            restaurant.setRestaurantEmail(cartItem.getMenu().getRestaurant().getRestaurantEmail());
-            placedOrder.setRestaurant(restaurant);// Assuming `Menu` has a `Restaurant`
+                Customer customer = new Customer();
+                customer.setCustomerId(cartItem.getCustomer().getCustomerId());
+                placedOrder.setCustomer(customer);
 
-            placedOrder.setPlacedOrderPrice(cartItem.getMenu().getMenuPrice());
-            placedOrder.setPlacedOrderQty(cartItem.getQty());
-            placedOrder.setDelivery("Pending");  // Example: set delivery status
+                Restaurant restaurant = new Restaurant();
+                restaurant.setRestaurantId(cartItem.getMenu().getRestaurant().getRestaurantId());
+                restaurant.setRestaurantName(cartItem.getMenu().getRestaurant().getRestaurantName());
+                restaurant.setRestaurantAddress(cartItem.getMenu().getRestaurant().getRestaurantAddress());
+                restaurant.setRestaurantEmail(cartItem.getMenu().getRestaurant().getRestaurantEmail());
+                placedOrder.setRestaurant(restaurant);// Assuming `Menu` has a `Restaurant`
 
-            // Save the placed order
-            placedOrderRepository.save(placedOrder);
+                placedOrder.setPlacedOrderPrice(cartItem.getMenu().getMenuPrice());
+                placedOrder.setPlacedOrderQty(cartItem.getQty());
+                placedOrder.setDelivery("Pending");
 
-            Cart cart = cartRepository.findByCartId(cartItem.getCartId());
+                // Save the placed order
+                placedOrderRepository.save(placedOrder);
 
-            // Delete the cart item
-            cartRepository.delete(cart);
+                Cart cart = cartRepository.findByCartId(cartItem.getCartId());
+
+                // Delete the cart item
+                cartRepository.delete(cart);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
         }
     }
 }

@@ -21,30 +21,50 @@ public class PlacedOrderController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
     @PostMapping
     public PlacedOrder savePlacedOrder(@RequestBody PlacedOrder placedOrder) {
-        return placedOrderService.savePlacedOrder(placedOrder);
+        try {
+            return placedOrderService.savePlacedOrder(placedOrder);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
     @GetMapping("/customer/{customerId}")
     public List<PlacedOrdersByACustomer> getPlacedOrdersByCustomer(@PathVariable("customerId") int customerId) {
-        return placedOrderService.placedOrdersByACustomer(customerId);
+        try {
+            return placedOrderService.placedOrdersByACustomer(customerId);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
     @GetMapping("/getByRestaurant/{id}")
     public List<PlacedOrdersByRestaurant> getPlacedOrdersByRestaurant(@PathVariable("id") int id) {
-        return placedOrderService.placedOrdersByRestaurant(id);
+        try {
+            return placedOrderService.placedOrdersByRestaurant(id);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     @DeleteMapping("/deleteById/{id}")
     public Integer deleteRestaurantById(@PathVariable("id") int id) {
-        return placedOrderService.deleteByPlacedOrderId(id);
+        try {
+            return placedOrderService.deleteByPlacedOrderId(id);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     @GetMapping("/placeOrderFromCart/{customerId}")
     public void placeOrderFromCart(@PathVariable("customerId") int customerId) {
-        placedOrderService.placeOrderAndClearCart(customerId);
+        try {
+            placedOrderService.placeOrderAndClearCart(customerId);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

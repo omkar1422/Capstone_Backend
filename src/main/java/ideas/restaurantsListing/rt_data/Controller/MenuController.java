@@ -18,18 +18,31 @@ public class MenuController {
 
     @PostMapping("/saveListOfMenus")
     public List<Menu> saveListOfMenus(@RequestBody List<Menu> menus) {
-        return menuService.saveListOfMenus(menus);
+        try {
+            return menuService.saveListOfMenus(menus);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public Menu saveMenu(@RequestBody Menu menu) {
-        return menuService.saveMenu(menu);
+        try {
+            return menuService.saveMenu(menu);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CUSTOMER')")
     @GetMapping("/{restaurantId}")
     public List<MenusByRestaurant> getMenusByRestaurant(@PathVariable("restaurantId") int id) {
-        return menuService.getMenusByRestaurant(id);
+        try {
+            return menuService.getMenusByRestaurant(id);
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 }

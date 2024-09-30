@@ -19,36 +19,56 @@ public class CustomerService implements UserDetailsService {
     private CustomerRepository customerRepository;
 
     public Customer getCustomerByEmail(String customerEmail) {
-        return customerRepository.findByCustomerEmail(customerEmail);
+        try {
+            return customerRepository.findByCustomerEmail(customerEmail);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     public Iterable<Customer> getallCustomers() {
-        return customerRepository.findAll();
+        try {
+            return customerRepository.findAll();
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     public Customer saveCustomer(Customer customer) {
-        return customerRepository.save(customer);
+        try {
+            return customerRepository.save(customer);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     public Optional<Customer> getCustomerById(@PathVariable int id) {
-        Optional<Customer> customer = customerRepository.findById(id);
-        if (customer.isEmpty())
-            throw new CustomerNotFoundException("Customer not found with id " + id);
-        return customer;
+        try {
+            Optional<Customer> customer = customerRepository.findById(id);
+            if (customer.isEmpty())
+                throw new CustomerNotFoundException("Customer not found with id " + id);
+            return customer;
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        Customer customer = customerRepository.findByCustomerEmail(email);
-        if (customer == null) {
-            throw new UsernameNotFoundException("Customer not found");
-        }
+        try {
+            Customer customer = customerRepository.findByCustomerEmail(email);
+            if (customer == null) {
+                throw new UsernameNotFoundException("Customer not found");
+            }
 
-        return org.springframework.security.core.userdetails.User.builder()
-                .username(customer.getCustomerEmail())
-                .password(customer.getCustomerPassword())
-                .roles(customer.getRole())
-                .build();
+            return org.springframework.security.core.userdetails.User.builder()
+                    .username(customer.getCustomerEmail())
+                    .password(customer.getCustomerPassword())
+                    .roles(customer.getRole())
+                    .build();
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 }

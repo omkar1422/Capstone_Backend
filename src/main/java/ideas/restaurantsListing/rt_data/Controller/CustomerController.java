@@ -30,39 +30,51 @@ public class CustomerController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/getall")
     public Iterable<Customer> getAllCustomers() {
-        return customerService.getallCustomers();
+        try {
+            return customerService.getallCustomers();
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @PostMapping("/authAdmin/register")
     public Customer registerAdmin(@RequestBody Customer admin) {
-        if (customerRepository.existsByCustomerEmail(admin.getCustomerEmail())) {
-            throw new EmailAlreadyRegisteredException("Email is already registered");
-        }
-        System.out.println("CREATING USER");
-        // Hash the password
-        admin.setCustomerPassword(passwordEncoder.encode(admin.getCustomerPassword()));
+            if (customerRepository.existsByCustomerEmail(admin.getCustomerEmail())) {
+                throw new EmailAlreadyRegisteredException("Email is already registered");
+            }
+            System.out.println("CREATING USER");
+            // Hash the password
+            admin.setCustomerPassword(passwordEncoder.encode(admin.getCustomerPassword()));
 
-        // Explicitly set the role as ADMIN
-        admin.setRole(Roles.ROLE_ADMIN);
+            // Explicitly set the role as ADMIN
+            admin.setRole(Roles.ROLE_ADMIN);
 
-        return customerService.saveCustomer(admin);
+            return customerService.saveCustomer(admin);
     }
 
     @PostMapping("/register")
     public ResponseEntity<Customer> saveCustomer(@RequestBody Customer customer) {
-        customer.setCustomerPassword(passwordEncoder.encode(customer.getCustomerPassword()));
+        try {
+            customer.setCustomerPassword(passwordEncoder.encode(customer.getCustomerPassword()));
 
-        if (customer.getRole() == null || customer.getRole().isEmpty()) {
-            customer.setRole(Roles.ROLE_CUSTOMER);
+            if (customer.getRole() == null || customer.getRole().isEmpty()) {
+                customer.setRole(Roles.ROLE_CUSTOMER);
+            }
+
+            Customer savedCustomer = customerService.saveCustomer(customer);
+            return ResponseEntity.ok(savedCustomer);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
         }
-
-        Customer savedCustomer = customerService.saveCustomer(customer);
-        return ResponseEntity.ok(savedCustomer);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Customer>> getCustomerById(@PathVariable("id") int id) {
-        Optional<Customer> customer = customerService.getCustomerById(id);
-        return ResponseEntity.ok(customer);
+        try {
+            Optional<Customer> customer = customerService.getCustomerById(id);
+            return ResponseEntity.ok(customer);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -14,37 +14,69 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class RestaurantService{
+public class RestaurantService {
 
     @Autowired
-    RestaurantRepository restaurantRepository;
+    private RestaurantRepository restaurantRepository;
 
     public List<Restaurant> saveListOfRestaurants(List<Restaurant> restaurants) {
-        return restaurantRepository.saveAll(restaurants);
+        try {
+            return restaurantRepository.saveAll(restaurants);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to save the list of restaurants", e);
+        }
     }
 
     public List<Restaurant> getAllRestaurants() {
-        return restaurantRepository.findAll();
+        try {
+            return restaurantRepository.findAll();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to retrieve the list of restaurants", e);
+        }
     }
 
     public Restaurant saveRestaurant(Restaurant restaurant) {
-        return restaurantRepository.save(restaurant);
+        try {
+            return restaurantRepository.save(restaurant);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to save restaurant", e);
+        }
     }
 
     public List<Restaurant> getAllRestaurantsPaging(int pageNo, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
-        Page<Restaurant> pageResult = restaurantRepository.findAll(pageable);
-        return pageResult.getContent();
+        try {
+            Pageable pageable = PageRequest.of(pageNo, pageSize);
+            Page<Restaurant> pageResult = restaurantRepository.findAll(pageable);
+            return pageResult.getContent();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to retrieve paginated list of restaurants", e);
+        }
     }
 
     public Optional<RestaurantById> getRestaurantById(int id) {
-        Optional<RestaurantById> restaurant = restaurantRepository.findById(id);
-        if(restaurant == null)
-            throw new RestaurantNotFoundException("Restaurant with id " + id + "doesn't exist");
-        return restaurant;
+        try {
+            Optional<RestaurantById> restaurant = restaurantRepository.findById(id);
+            if (!restaurant.isPresent()) {
+                throw new RestaurantNotFoundException("Restaurant with id " + id + " doesn't exist");
+            }
+            return restaurant;
+        } catch (RestaurantNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to retrieve restaurant by ID", e);
+        }
     }
 
     public void deleteRestaurantById(int id) {
-        restaurantRepository.deleteById(id);
+        try {
+            if (!restaurantRepository.existsById(id)) {
+                throw new RestaurantNotFoundException("Restaurant with id " + id + " doesn't exist");
+            }
+            restaurantRepository.deleteById(id);
+        } catch (RestaurantNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to delete restaurant by ID", e);
+        }
     }
 }

@@ -1,10 +1,13 @@
 package ideas.restaurantsListing.rt_data.Service;
 
 import ideas.restaurantsListing.rt_data.Entity.Customer;
+import ideas.restaurantsListing.rt_data.Entity.Menu;
 import ideas.restaurantsListing.rt_data.Entity.PlacedOrder;
 import ideas.restaurantsListing.rt_data.Entity.Restaurant;
 import ideas.restaurantsListing.rt_data.Exception.placedOrder.PlacedOrderNotFound;
+import ideas.restaurantsListing.rt_data.Repository.CartRepository;
 import ideas.restaurantsListing.rt_data.Repository.PlacedOrderRepository;
+import ideas.restaurantsListing.rt_data.dto.cart.CartItemsByCustomer;
 import ideas.restaurantsListing.rt_data.dto.placedOrders.PlacedOrdersByACustomer;
 import ideas.restaurantsListing.rt_data.dto.placedOrders.PlacedOrdersByRestaurant;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,6 +27,9 @@ class PlacedOrderServiceTest {
 
     @Mock
     private PlacedOrderRepository placedOrderRepository;
+
+    @Mock
+    private CartRepository cartRepository;
 
     @InjectMocks
     private PlacedOrderService placedOrderService;
@@ -171,6 +177,110 @@ class PlacedOrderServiceTest {
         });
 
         assertEquals("Order with id " + orderId + "not found", exception.getMessage());
+    }
+
+    @Test
+    public void testPlaceOrderAndClearCart_Success() {
+        // Arrange
+        int customerId = 1;
+        Customer customer = new Customer(customerId, null, null, null, null, null, null);
+
+        // Create a mock cart item
+        CartItemsByCustomer cartItem = mock(CartItemsByCustomer.class);
+        CartItemsByCustomer.Menu cartMenu = mock(CartItemsByCustomer.Menu.class);
+        CartItemsByCustomer.Customer cartCustomer = mock(CartItemsByCustomer.Customer.class);
+
+        // Setting up the mock behavior for the CartItemsByCustomer.Menu
+        when(cartMenu.getMenuId()).thenReturn(1);
+        when(cartMenu.getMenuName()).thenReturn("Pizza");
+        when(cartMenu.getMenuPrice()).thenReturn(100.0f);
+        when(cartMenu.getMenuImage()).thenReturn("image_url");
+
+        // Setup the cart item mock to return the menu and customer
+        when(cartItem.getMenu()).thenReturn(cartMenu);
+        when(cartItem.getCustomer()).thenReturn(cartCustomer);
+        when(cartItem.getQty()).thenReturn(2);
+        when(cartItem.getCartId()).thenReturn(1);
+
+        // Mock the behavior of the repositories
+        when(cartRepository.findByCustomer(any(Customer.class))).thenReturn(List.of(cartItem));
+
+        // Act
+        placedOrderService.placeOrderAndClearCart(customerId);
+
+        // Assert
+        verify(placedOrderRepository, times(1)).save(any(PlacedOrder.class)); // Check if save is called once
+        verify(cartRepository, times(1)).delete(any()); // Check if delete is called once
+    }
+
+    @Test
+    public void testPlacedOrdersByRestaurant_Exception() {
+        // Arrange
+        int restaurantId = 1;
+        Restaurant restaurant = new Restaurant(restaurantId, null, null, null, null, null, null, null);
+
+        // Simulating an exception when the repository method is called
+        doThrow(new RuntimeException("Service error")).when(placedOrderRepository).findByRestaurant(any(Restaurant.class));
+
+        // Act & Assert
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            placedOrderService.placedOrdersByRestaurant(restaurantId);
+        });
+
+        // Verify the exception message
+        assertEquals("Service error", exception.getMessage());
+    }
+
+
+    @Test
+    public void testPlaceOrderAndClearCart_Exception() {
+        // Arrange
+        int customerId = 1;
+        when(cartRepository.findByCustomer(any(Customer.class))).thenThrow(new RuntimeException("Service error"));
+
+        // Act & Assert
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            placedOrderService.placeOrderAndClearCart(customerId);
+        });
+
+        // Verify the exception message
+        assertEquals("Service error", exception.getMessage());
+    }
+
+    @Test
+    public void testPlacedOrdersByACustomer_Exception() {
+        // Arrange
+        int customerId = 1;
+
+        // Mock the behavior of the repository to throw an exception
+        when(placedOrderRepository.findByCustomer(any(Customer.class)))
+                .thenThrow(new RuntimeException("Database access error"));
+
+        // Act and Assert
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            placedOrderService.placedOrdersByACustomer(customerId);
+        });
+
+        // Verify the exception message
+        assertEquals("Database access error", exception.getMessage());
+    }
+
+    @Test
+    public void shouldSavePlacedOrder_Exception() {
+        // Arrange
+        PlacedOrder placedOrder = new PlacedOrder(); // Create a mock PlacedOrder instance
+
+        // Mock the behavior of the repository to throw an exception
+        when(placedOrderRepository.save(any(PlacedOrder.class)))
+                .thenThrow(new RuntimeException("Error saving placed order"));
+
+        // Act and Assert
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            placedOrderService.savePlacedOrder(placedOrder);
+        });
+
+        // Verify the exception message
+        assertEquals("Error saving placed order", exception.getMessage());
     }
 
 }

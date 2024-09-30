@@ -17,16 +17,28 @@ public class MenuService {
     private MenuRepository menuRepository;
 
     public List<Menu> saveListOfMenus(List<Menu> menus) {
-        return menuRepository.saveAll(menus);
+        try {
+            return menuRepository.saveAll(menus);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     public Menu saveMenu(Menu menu) {
-        return menuRepository.save(menu);
+        try {
+            return menuRepository.save(menu);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     public List<MenusByRestaurant> getMenusByRestaurant(int id) {
-        return menuRepository.findByRestaurant(
-                new Restaurant(id,null,null,null,null,null,null,null)
-        );
+        try{
+            return menuRepository.findByRestaurant(
+                    new Restaurant(id,null,null,null,null,null,null,null)
+            );
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

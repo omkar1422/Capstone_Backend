@@ -18,9 +18,13 @@ public class RatingService {
     private RatingRepository ratingRepository;
 
     public List<RatingByRestaurat> getRatingsByRestaurant(int restaurantId) {
-        return ratingRepository.findByRestaurant(
-                new Restaurant(restaurantId,null,null,null,null,null,null,null)
-        );
+        try {
+            return ratingRepository.findByRestaurant(
+                    new Restaurant(restaurantId,null,null,null,null,null,null,null)
+            );
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     public List<Rating> saveListOfRatings(List<Rating> ratings) {
@@ -28,17 +32,29 @@ public class RatingService {
     }
 
     public Rating saveRating(Rating rating) {
-        return ratingRepository.save(rating);
+        try {
+            return ratingRepository.save(rating);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public RatingOfRestaurantByCustomer getRatingByRestaurantAndCustomer(int restaurantId, int customerId) {
-        return ratingRepository.findByRestaurantAndCustomer(
-                new Restaurant(restaurantId,null,null,null,null,null,null,null),
-                new Customer(customerId,null,null,null,null,null,null)
-        );
+        try {
+            return ratingRepository.findByRestaurantAndCustomer(
+                    new Restaurant(restaurantId,null,null,null,null,null,null,null),
+                    new Customer(customerId,null,null,null,null,null,null)
+            );
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     public Double getAverageRatingOfARestaurant(int restaurantId) {
-        return ratingRepository.findAverageRatingByRestaurantId(restaurantId);
+        try {
+            return ratingRepository.findAverageRatingByRestaurantId(restaurantId);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
