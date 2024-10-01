@@ -40,6 +40,8 @@ class RatingControllerTest {
     private Restaurant restaurant1;
     private Customer customer1;
 
+    private RatingOfRestaurantByCustomer ratingDTO;
+
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -64,6 +66,10 @@ class RatingControllerTest {
         // Set up a sample Customer object
         customer1 = new Customer();
         customer1.setCustomerId(1); // Set an ID for the customer
+
+        ratingDTO = mock(RatingOfRestaurantByCustomer.class);
+        when(ratingDTO.getRestaurant()).thenReturn(restaurant);
+        when(ratingDTO.getCustomer()).thenReturn(customer);
 
         // Set up the Rating object
         rating = new Rating();
@@ -239,18 +245,22 @@ class RatingControllerTest {
 
     @Test
     void shouldThrowRatingAlreadySubmitted_WhenRatingExists() {
-        // Arrange
+        // Arrange: Simulate that the rating already exists
         when(ratingService.getRatingByRestaurantAndCustomer(restaurant.getRestaurantId(), customer.getCustomerId()))
-                .thenReturn((RatingOfRestaurantByCustomer) rating); // Ensure that `rating` is of type `Rating`
+                .thenReturn(ratingDTO); // Existing rating found as DTO
 
-        // Act & Assert
-        RatingAlreadySubmitted exception = assertThrows(RatingAlreadySubmitted.class, () ->
-                ratingController.saveRating(rating)
-        );
+        // Act & Assert: Expect RatingAlreadySubmitted exception to be thrown
+        RatingAlreadySubmitted exception = assertThrows(RatingAlreadySubmitted.class, () -> {
+            ratingController.saveRating(rating);
+        });
+
+        // Assert that the exception message is as expected
         assertEquals("rating for the restaurant with id " + restaurant.getRestaurantId() +
                 "already exists by customer with id " + customer.getCustomerId(), exception.getMessage());
-    }
 
+        // Verify that saveRating() was never called because the rating already exists
+        verify(ratingService, never()).saveRating(any(Rating.class));
+    }
 
     @Test
     void shouldThrowRuntimeException_OnServiceError() {

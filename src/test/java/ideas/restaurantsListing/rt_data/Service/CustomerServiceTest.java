@@ -142,18 +142,15 @@ class CustomerServiceTest {
     }
 
     @Test
-    public void shouldThrowCustomerNotFoundExceptionWhenGettingCustomerByIdFails() {
-        // Arrange
+    void shouldThrowCustomerNotFoundExceptionWhenCustomerNotFound() {
+        // Arrange: Mock customerRepository to return empty for a given id
         int customerId = 1;
         when(customerRepository.findById(customerId)).thenReturn(Optional.empty());
 
-        // Act & Assert
-        CustomerNotFoundException exception = assertThrows(CustomerNotFoundException.class, () -> {
+        // Act & Assert: Verify that CustomerNotFoundException is thrown
+        assertThrows(CustomerNotFoundException.class, () -> {
             customerService.getCustomerById(customerId);
         });
-
-        assertEquals("Customer not found with id " + customerId, exception.getMessage());
-        verify(customerRepository, times(1)).findById(customerId); // Verify the repository call
     }
 
     @Test

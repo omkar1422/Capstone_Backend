@@ -33,15 +33,11 @@ public class RatingController {
     @PostMapping
     public Rating saveRating(@RequestBody Rating rating) {
 
-        try{
             if(ratingService.getRatingByRestaurantAndCustomer(rating.getRestaurant().getRestaurantId(), rating.getCustomer().getCustomerId()) != null) {
                 throw new RatingAlreadySubmitted("rating for the restaurant with id " +
                         rating.getRestaurant().getRestaurantId() + "already exists by customer with id "  + rating.getCustomer().getCustomerId());
             }
             return ratingService.saveRating(rating);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
     }
 
     @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_ADMIN')")

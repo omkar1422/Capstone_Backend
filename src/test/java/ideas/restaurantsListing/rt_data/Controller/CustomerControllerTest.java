@@ -56,10 +56,8 @@ class CustomerControllerTest {
 
     @Test
     public void shouldGetAllCustomers_Failure() {
-        // Arrange
         when(customerService.getallCustomers()).thenThrow(new RuntimeException());
 
-        // Act & Assert
         assertThrows(RuntimeException.class, () -> customerController.getAllCustomers());
     }
 
@@ -74,10 +72,8 @@ class CustomerControllerTest {
         when(passwordEncoder.encode(admin.getCustomerPassword())).thenReturn("hashedPassword");
         when(customerService.saveCustomer(any(Customer.class))).thenReturn(admin);
 
-        // Act
         Customer response = customerController.registerAdmin(admin);
 
-        // Assert
         assertNotNull(response);
         assertEquals("admin@example.com", response.getCustomerEmail());
         assertEquals("hashedPassword", response.getCustomerPassword());

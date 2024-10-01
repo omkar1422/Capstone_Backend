@@ -2,7 +2,6 @@ package ideas.restaurantsListing.rt_data.Service;
 
 import ideas.restaurantsListing.rt_data.Entity.*;
 import ideas.restaurantsListing.rt_data.Exception.placedOrder.PlacedOrderNotFound;
-import ideas.restaurantsListing.rt_data.Exception.restaurant.RestaurantNotFoundException;
 import ideas.restaurantsListing.rt_data.Repository.CartRepository;
 import ideas.restaurantsListing.rt_data.Repository.PlacedOrderRepository;
 import ideas.restaurantsListing.rt_data.dto.cart.CartItemsByCustomer;

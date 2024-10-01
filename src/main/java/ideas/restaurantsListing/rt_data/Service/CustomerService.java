@@ -43,14 +43,11 @@ public class CustomerService implements UserDetailsService {
     }
 
     public Optional<Customer> getCustomerById(@PathVariable int id) {
-        try {
-            Optional<Customer> customer = customerRepository.findById(id);
-            if (customer.isEmpty())
-                throw new CustomerNotFoundException("Customer not found with id " + id);
-            return customer;
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e.getMessage());
+        Optional<Customer> customer = customerRepository.findById(id);
+        if (customer.isEmpty()) {
+            throw new CustomerNotFoundException("Customer not found with id " + id);
         }
+        return customer;
     }
 
     @Override
